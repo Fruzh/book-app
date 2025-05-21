@@ -28,11 +28,11 @@ let books = [
   },
   {
     "id": 4,
-    "category": "Psikologi",
-    "title": "halo",
-    "author": "gfdgdf",
-    "desc": "gfdgd",
-    "content": "dfgdfga",
+    "category": "Fiksi",
+    "title": "1984",
+    "author": "George Orwell",
+    "desc": "Novel dystopia tentang totalitarianisme, pengawasan, dan manipulasi kebenaran.",
+    "content": "Buku ini menggambarkan dunia di mana Partai mengendalikan setiap aspek kehidupan, dipimpin oleh Big Brother. Winston Smith, protagonis, berjuang melawan propaganda dan kontrol pikiran, tetapi menghadapi pengkhianatan dan penindasan. Orwell mengeksplorasi bahaya otoritarianisme, kehilangan kebebasan individu, dan distorsi kebenaran, membuat novel ini relevan untuk diskusi politik modern.",
     "image": "/uploads/book-teqlvPZNf2.jpg"
   },
   {
