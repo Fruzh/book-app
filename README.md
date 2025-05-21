@@ -102,6 +102,7 @@ Install dependencies and run migrations:
 ```bash
 npm install
 node ace migration:run
+node ace db:seed
 node ace serve --watch
 ```
 
