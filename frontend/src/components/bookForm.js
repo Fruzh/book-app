@@ -86,36 +86,30 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
         if (!title) {
             setTitleError('Judul wajib diisi');
             errors.push('Judul wajib diisi');
-        } else if (title.length < 5) {
-            setTitleError('Judul minimal 5 karakter');
-            errors.push('Judul minimal 5 karakter');
         }
 
         // Validasi author
         if (!author) {
             setAuthorError('Penulis wajib diisi');
             errors.push('Penulis wajib diisi');
-        } else if (author.length < 5) {
-            setAuthorError('Penulis minimal 5 karakter');
-            errors.push('Penulis minimal 5 karakter');
         }
 
         // Validasi desc
         if (!desc) {
             setDescError('Deskripsi wajib diisi');
             errors.push('Deskripsi wajib diisi');
-        } else if (desc.length < 5) {
-            setDescError('Deskripsi minimal 5 karakter');
-            errors.push('Deskripsi minimal 5 karakter');
+        } else if (desc.length < 10) {
+            setDescError('Deskripsi minimal 10 karakter');
+            errors.push('Deskripsi minimal 10 karakter');
         }
 
         // Validasi content
         if (!content) {
             setContentError('Isi buku wajib diisi');
             errors.push('Isi buku wajib diisi');
-        } else if (content.length < 5) {
-            setContentError('Isi buku minimal 5 karakter');
-            errors.push('Isi buku minimal 5 karakter');
+        } else if (content.length < 20) {
+            setContentError('Isi buku minimal 20 karakter');
+            errors.push('Isi buku minimal 20 karakter');
         }
 
         // Validasi category

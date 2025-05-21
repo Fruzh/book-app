@@ -214,6 +214,14 @@ export default class extends BaseSeeder {
       },
       {
         category: "Fiksi",
+        title: "1984",
+        author: "George Orwell",
+        desc: "Novel dystopia tentang totalitarianisme, pengawasan, dan manipulasi kebenaran.",
+        content: "Buku ini menggambarkan dunia di mana Partai mengendalikan setiap aspek kehidupan, dipimpin oleh Big Brother. Winston Smith, protagonis, berjuang melawan propaganda dan kontrol pikiran, tetapi menghadapi pengkhianatan dan penindasan. Orwell mengeksplorasi bahaya otoritarianisme, kehilangan kebebasan individu, dan distorsi kebenaran, membuat novel ini relevan untuk diskusi politik modern.",
+        image: "/uploads/book-3Rw_-YKQlN.jpg"
+      },
+      {
+        category: "Fiksi",
         title: "To Kill a Mockingbird",
         author: "Harper Lee",
         desc: "Novel klasik tentang keadilan, moralitas, dan rasisme di Amerika Selatan pada era 1930-an.",
@@ -234,7 +242,7 @@ export default class extends BaseSeeder {
         author: "Adam Smith",
         desc: "Karya klasik yang menjadi dasar ekonomi modern, membahas pasar bebas, pembagian kerja, dan prinsip ekonomi liberal.",
         content: "Buku ini memperkenalkan konsep 'tangan tak terlihat' (invisible hand) yang menjelaskan bagaimana kepentingan individu dapat menghasilkan manfaat kolektif melalui pasar bebas. Smith menguraikan pembagian kerja sebagai pendorong efisiensi dan produktivitas, serta membahas akumulasi modal, perdagangan internasional, dan peran pemerintah dalam ekonomi. Karya ini menjadi fondasi penting bagi teori ekonomi liberal dan kapitalisme modern, relevan untuk memahami dinamika pasar hingga saat ini.",
-        image: "/uploads/book-dXPm0YCYr3.jpg"
+        image: "/uploads/book-pkjES01Jqw.jpg"
       }
     ])
   }

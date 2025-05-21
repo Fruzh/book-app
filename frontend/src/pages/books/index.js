@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { BookText, Pencil, Trash, Plus, Search, X } from 'lucide-react';
+import { Pencil, Trash, Plus, Search, X } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
 import Loader from '@/components/loader';
@@ -44,12 +44,14 @@ export default function BookList() {
     const [selectedCategory, setSelectedCategory] = useState('Semua Kategori');
     const [searchQuery, setSearchQuery] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
+    const [highlightedIndex, setHighlightedIndex] = useState(-1);
     const { ref: loaderRef, inView: loaderInView } = useInView({ threshold: 1 });
     const cardRefs = useRef([]);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const buttonRef = useRef(null);
     const inputRef = useRef(null);
+    const suggestionRefs = useRef([]);
 
     const categories = [
         'Semua Kategori',
@@ -131,6 +133,17 @@ export default function BookList() {
             : [];
     }, [filteredBooks, searchQuery]);
 
+    useEffect(() => {
+        if (
+            highlightedIndex >= 0 &&
+            suggestionRefs.current[highlightedIndex]
+        ) {
+            suggestionRefs.current[highlightedIndex].scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+            });
+        }
+    }, [highlightedIndex]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -347,9 +360,10 @@ export default function BookList() {
     }
 
     return (
-        <>
+        <div className="flex flex-col min-h-screen">
             <Navbar />
-            <div className="max-w-7xl mx-auto px-4 py-10 min-h-[80vh]">
+
+            <main className="max-w-7xl xl:w-7xl mx-auto px-4 pt-10 pb-14 min-h-[50vh] flex-grow">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <h1 className="text-4xl font-extrabold text-gray-900">Koleksi Buku</h1>
 
@@ -372,6 +386,27 @@ export default function BookList() {
                                 onBlur={() => {
                                     setTimeout(() => setShowSuggestions(false), 150);
                                 }}
+                                onKeyDown={(e) => {
+                                    if (!showSuggestions || liveSuggestions.length === 0) return;
+
+                                    if (e.key === 'ArrowDown') {
+                                        e.preventDefault();
+                                        setHighlightedIndex((prev) =>
+                                            prev < liveSuggestions.length - 1 ? prev + 1 : 0
+                                        );
+                                    } else if (e.key === 'ArrowUp') {
+                                        e.preventDefault();
+                                        setHighlightedIndex((prev) =>
+                                            prev > 0 ? prev - 1 : liveSuggestions.length - 1
+                                        );
+                                    } else if (e.key === 'Enter' && highlightedIndex >= 0) {
+                                        const selected = liveSuggestions[highlightedIndex];
+                                        setSearchQuery(selected.title);
+                                        setShowSuggestions(false);
+                                        setHighlightedIndex(-1);
+                                        inputRef.current?.blur();
+                                    }
+                                }}
                                 placeholder="Cari judul, penulis, atau kategori..."
                                 className="w-full pl-10 pr-10 py-2.5 rounded-lg border border-gray-300 shadow-sm text-gray-800 bg-white hover:bg-gray-50 outline-none transition"
                             />
@@ -392,15 +427,21 @@ export default function BookList() {
                                 <ul className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-auto">
                                     {liveSuggestions.map((book, idx) => (
                                         <li
-                                            key={idx}
-                                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm text-gray-700"
+                                            key={book.id}
+                                            ref={(el) => (suggestionRefs.current[idx] = el)}
+                                            className={`px-4 py-2 cursor-pointer text-sm text-gray-700 ${highlightedIndex === idx ? 'bg-blue-100' : 'hover:bg-gray-100'
+                                                }`}
+                                            onMouseEnter={() => setHighlightedIndex(idx)}
+                                            onMouseLeave={() => setHighlightedIndex(-1)}
                                             onClick={() => {
                                                 setSearchQuery(book.title);
                                                 setShowSuggestions(false);
-                                                inputRef.current?.blur();
+                                                setHighlightedIndex(-1);
+                                                router.push(`/books/${book.id}/views`);
                                             }}
                                         >
-                                            {book.title} <span className="text-gray-400">– {book.author}</span>
+                                            {book.title}{' '}
+                                            <span className="text-gray-400">– {book.author}</span>
                                         </li>
                                     ))}
                                 </ul>
@@ -477,9 +518,12 @@ export default function BookList() {
                     </div>
                 </div>
 
-
-                {filteredBooks.length === 0 ? (
-                    <p className="text-center text-gray-500 text-lg min-h-screen flex items-center justify-center">
+                {books.length === 0 ? (
+                    <p className="text-center text-gray-500 text-lg py-24 flex items-center justify-center">
+                        Belum ada buku yang ditambahkan.
+                    </p>
+                ) : filteredBooks.length === 0 ? (
+                    <p className="text-center text-gray-500 text-lg py-24 flex items-center justify-center">
                         Tidak ada buku tersedia untuk kriteria ini.
                     </p>
                 ) : (
@@ -539,7 +583,7 @@ export default function BookList() {
                                                     e.stopPropagation();
                                                     handleDeleteClick(b.id);
                                                 }}
-                                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm flex items-center gap-1 transition-colors duration-200"
+                                                className="cursor-pointer bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm flex items-center gap-1 transition-colors duration-200"
                                                 aria-label={`Hapus buku ${b.title}`}
                                             >
                                                 <Trash size={18} />
@@ -598,8 +642,9 @@ export default function BookList() {
                         overflow: hidden;
                     }
                 `}</style>
-            </div>
+            </main>
+
             <Footer />
-        </>
+        </div>
     );
 }

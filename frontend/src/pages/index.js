@@ -8,14 +8,38 @@ import Loader from '@/components/loader';
 export default function Home() {
     const [books, setBooks] = useState([]);
     const [isClient, setIsClient] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         setIsClient(true);
         fetch('/api/books')
-            .then((res) => res.json())
-            .then((data) => setBooks(data.slice(0, 3)))
-            .catch((error) => console.error('Failed to fetch books:', error));
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error('Gagal memuat buku. Silakan coba lagi nanti.');
+                }
+                return res.json();
+            })
+            .then((data) => {
+                setBooks(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error('Failed to fetch books:', error);
+                setError(error.message);
+                setLoading(false);
+
+                window.dispatchEvent(
+                    new CustomEvent('showNotification', {
+                        detail: {
+                            message: error.message,
+                            type: 'error',
+                        },
+                    })
+                );
+            });
     }, []);
+
 
     const [show, setShow] = useState(false);
 
@@ -36,14 +60,14 @@ export default function Home() {
                 <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 text-center">
                     <div className="max-w-7xl mx-auto px-6">
                         <h1
-                            className={`text-5xl leading-[1.2] font-extrabold mb-4 transition-all duration-700 ease-out transform ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+                            className={`text-5xl leading-[1.2] font-extrabold mb-4 transition-all duration-700 ease-out transform ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
                                 }`}
                         >
                             Katalog Buku Book App
                         </h1>
 
                         <p
-                            className={`text-xl mb-8 transition-all duration-700 delay-200 ease-out transform ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+                            className={`text-xl mb-8 transition-all duration-700 delay-200 ease-out transform ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
                                 }`}
                         >
                             Jelajahi, kelola, dan tambahkan koleksi buku favorit Anda dengan mudah.
@@ -51,12 +75,11 @@ export default function Home() {
 
                         <Link
                             href="/books"
-                            className={`inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-700 delay-400 ease-out transform ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+                            className={`inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-700 delay-400 ease-out transform ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
                                 }`}
                         >
                             <BookOpen size={20} /> Lihat Koleksi
                         </Link>
-
                     </div>
                 </section>
 
@@ -65,9 +88,9 @@ export default function Home() {
                     <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
                         Buku Teratas
                     </h2>
-                    {isClient && books.length > 0 ? (
+                    {isClient && !loading && !error && books.length > 0 ? (
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
-                            {books.map((book, index) => (
+                            {books.slice().sort((a, b) => b.id - a.id).slice(0, 3).map((book, index) => (
                                 <Link
                                     key={book.id}
                                     href={`/books/${book.id}/views`}
@@ -92,14 +115,20 @@ export default function Home() {
                                         <p className="text-sm text-gray-600 italic line-clamp-1">
                                             oleh {book.author}
                                         </p>
-                                        {/* <p className="text-sm text-gray-500 mt-full line-clamp-2">
-                                            {book.desc}
-                                        </p> */}
                                     </div>
                                 </Link>
                             ))}
                         </div>
-
+                    ) : isClient && !loading && !error && books.length === 0 ? (
+                        <div className="flex justify-center items-center py-12">
+                            <p className="text-center text-gray-500 text-lg">
+                                Belum ada buku yang ditambahkan.
+                            </p>
+                        </div>
+                    ) : isClient && !loading && error ? (
+                        <div className="flex justify-center items-center py-12">
+                            <p className="text-center text-red-600 text-lg">{error}</p>
+                        </div>
                     ) : (
                         <div className="flex justify-center items-center py-12">
                             <Loader message="Memuat buku..." size="large" color="blue" />
@@ -123,7 +152,7 @@ export default function Home() {
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <div
-                                className={`text-center p-6 transition-all duration-700 ease-out transform ${show ? "opacity-100 delay-100" : "opacity-0"
+                                className={`text-center p-6 transition-all duration-700 ease-out transform ${show ? 'opacity-100 delay-100' : 'opacity-0'
                                     }`}
                             >
                                 <div className="flex justify-center text-blue-600 mb-4">
@@ -138,7 +167,7 @@ export default function Home() {
                             </div>
 
                             <div
-                                className={`text-center p-6 transition-all duration-700 ease-out transform ${show ? "opacity-100 delay-200" : "opacity-0"
+                                className={`text-center p-6 transition-all duration-700 ease-out transform ${show ? 'opacity-100 delay-200' : 'opacity-0'
                                     }`}
                             >
                                 <div className="flex justify-center text-blue-600 mb-4">
@@ -153,7 +182,7 @@ export default function Home() {
                             </div>
 
                             <div
-                                className={`text-center p-6 transition-all duration-700 ease-out transform ${show ? "opacity-100 delay-300" : "opacity-0"
+                                className={`text-center p-6 transition-all duration-700 ease-out transform ${show ? 'opacity-100 delay-300' : 'opacity-0'
                                     }`}
                             >
                                 <div className="flex justify-center text-blue-600 mb-4">

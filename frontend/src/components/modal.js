@@ -60,13 +60,13 @@ export default function Modal({ title, message, onConfirm, onCancel }) {
                 <div className="flex justify-end gap-3">
                     <button
                         onClick={handleCancel}
-                        className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
+                        className="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-all duration-200"
                     >
                         Batal
                     </button>
                     <button
                         onClick={handleConfirm}
-                        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                        className="cursor-pointer px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200"
                     >
                         Hapus
                     </button>

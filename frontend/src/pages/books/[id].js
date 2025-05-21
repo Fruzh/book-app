@@ -136,20 +136,20 @@ export default function EditBook() {
 
     if (error) {
         return (
-            <>
+            <div className='flex flex-col min-h-screen'>
                 <Navbar />
-                <div className="max-w-6xl mx-auto px-4 py-8">
+                <main className="max-w-7xl xl:w-7xl mx-auto px-4 py-8 flex-grow">
                     <h1 className="text-3xl font-bold text-gray-800">Error</h1>
-                    <p className="text-red-600">{error}</p>
+                    <p className="mt-4 text-red-600">{error}</p>
                     <button
                         onClick={() => router.push('/books')}
-                        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200"
+                        className="cursor-pointer mt-20 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200"
                     >
                         Kembali ke Daftar Buku
                     </button>
-                </div>
+                </main>
                 <Footer />
-            </>
+            </div>
         );
     }
 
@@ -192,14 +192,14 @@ export default function EditBook() {
     return (
         <>
             <Navbar />
-            <div className="max-w-7xl mx-auto px-4 py-10 min-h-[80vh]">
+            <main className="max-w-7xl mx-auto px-4 py-10 min-h-[80vh]">
                 <h1 className="text-4xl font-extrabold text-gray-900 mb-8">Edit Buku</h1>
                 <BookForm
                     initialData={book}
                     onSubmit={handleSubmit}
                     onDelete={handleDelete}
                 />
-            </div>
+            </main>
             <Footer />
         </>
     );
