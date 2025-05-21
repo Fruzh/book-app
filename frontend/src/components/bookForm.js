@@ -11,12 +11,12 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
     const [category, setCategory] = useState('');
     const [image, setImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
-    const [titleError, setTitleError] = useState(false);
-    const [authorError, setAuthorError] = useState(false);
-    const [descError, setDescError] = useState(false);
-    const [contentError, setContentError] = useState(false);
-    const [categoryError, setCategoryError] = useState(false);
-    const [imageError, setImageError] = useState(null);
+    const [titleError, setTitleError] = useState('');
+    const [authorError, setAuthorError] = useState('');
+    const [descError, setDescError] = useState('');
+    const [contentError, setContentError] = useState('');
+    const [categoryError, setCategoryError] = useState('');
+    const [imageError, setImageError] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const router = useRouter();
 
@@ -64,96 +64,86 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
             }
             setImage(file);
             setImagePreview(URL.createObjectURL(file));
-            setImageError(null);
+            setImageError('');
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        setTitleError(false);
-        setAuthorError(false);
-        setDescError(false);
-        setContentError(false);
-        setCategoryError(false);
-        setImageError(null);
+        // Reset errors
+        setTitleError('');
+        setAuthorError('');
+        setDescError('');
+        setContentError('');
+        setCategoryError('');
+        setImageError('');
 
-        let hasError = false;
+        // Kumpulkan error dalam array sementara
+        const errors = [];
+
+        // Validasi title
         if (!title) {
-            setTitleError(true);
-            window.dispatchEvent(
-                new CustomEvent('showNotification', {
-                    detail: {
-                        message: 'Judul wajib diisi',
-                        type: 'error',
-                    },
-                })
-            );
-            hasError = true;
+            setTitleError('Judul wajib diisi');
+            errors.push('Judul wajib diisi');
+        } else if (title.length < 5) {
+            setTitleError('Judul minimal 5 karakter');
+            errors.push('Judul minimal 5 karakter');
         }
+
+        // Validasi author
         if (!author) {
-            setAuthorError(true);
-            window.dispatchEvent(
-                new CustomEvent('showNotification', {
-                    detail: {
-                        message: 'Penulis wajib diisi',
-                        type: 'error',
-                    },
-                })
-            );
-            hasError = true;
+            setAuthorError('Penulis wajib diisi');
+            errors.push('Penulis wajib diisi');
+        } else if (author.length < 5) {
+            setAuthorError('Penulis minimal 5 karakter');
+            errors.push('Penulis minimal 5 karakter');
         }
+
+        // Validasi desc
+        if (!desc) {
+            setDescError('Deskripsi wajib diisi');
+            errors.push('Deskripsi wajib diisi');
+        } else if (desc.length < 5) {
+            setDescError('Deskripsi minimal 5 karakter');
+            errors.push('Deskripsi minimal 5 karakter');
+        }
+
+        // Validasi content
+        if (!content) {
+            setContentError('Isi buku wajib diisi');
+            errors.push('Isi buku wajib diisi');
+        } else if (content.length < 5) {
+            setContentError('Isi buku minimal 5 karakter');
+            errors.push('Isi buku minimal 5 karakter');
+        }
+
+        // Validasi category
         if (!category) {
-            setCategoryError(true);
-            window.dispatchEvent(
-                new CustomEvent('showNotification', {
-                    detail: {
-                        message: 'Kategori wajib diisi',
-                        type: 'error',
-                    },
-                })
-            );
-            hasError = true;
+            setCategoryError('Kategori wajib dipilih');
+            errors.push('Kategori wajib dipilih');
         }
+
+        // Validasi image
         if (!image && !initialData.image) {
             setImageError('Gambar wajib diunggah');
-            window.dispatchEvent(
-                new CustomEvent('showNotification', {
-                    detail: {
-                        message: 'Gambar wajib diunggah',
-                        type: 'error',
-                    },
-                })
-            );
-            hasError = true;
-        }
-        if (!desc) {
-            setDescError(true);
-            window.dispatchEvent(
-                new CustomEvent('showNotification', {
-                    detail: {
-                        message: 'Deskripsi wajib diisi',
-                        type: 'error',
-                    },
-                })
-            );
-            hasError = true;
-        }
-        if (!content) {
-            setContentError(true);
-            window.dispatchEvent(
-                new CustomEvent('showNotification', {
-                    detail: {
-                        message: 'Isi buku wajib diisi',
-                        type: 'error',
-                    },
-                })
-            );
-            hasError = true;
+            errors.push('Gambar wajib diunggah');
         }
 
-
-        if (hasError) return;
+        // Tampilkan notifikasi error
+        if (errors.length > 0) {
+            errors.forEach((error) => {
+                window.dispatchEvent(
+                    new CustomEvent('showNotification', {
+                        detail: {
+                            message: error,
+                            type: 'error',
+                        },
+                    })
+                );
+            });
+            return;
+        }
 
         const formData = new FormData();
         formData.append('title', title);
@@ -196,7 +186,7 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
                                 value={title}
                                 onChange={(e) => {
                                     setTitle(e.target.value);
-                                    setTitleError(false);
+                                    setTitleError('');
                                 }}
                                 placeholder="Contoh: Laskar Pelangi"
                                 className={`mt-1 block w-full px-3 py-2 border ${titleError ? 'border-red-500' : 'border-gray-300'
@@ -204,7 +194,7 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
                                 aria-label="Judul buku"
                             />
                             {titleError && (
-                                <p className="mt-1 text-sm text-red-600">Judul wajib diisi</p>
+                                <p className="mt-1 text-sm text-red-600">{titleError}</p>
                             )}
                         </div>
 
@@ -215,7 +205,7 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
                                 value={author}
                                 onChange={(e) => {
                                     setAuthor(e.target.value);
-                                    setAuthorError(false);
+                                    setAuthorError('');
                                 }}
                                 placeholder="Contoh: Andrea Hirata"
                                 className={`mt-1 block w-full px-3 py-2 border ${authorError ? 'border-red-500' : 'border-gray-300'
@@ -223,7 +213,7 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
                                 aria-label="Penulis buku"
                             />
                             {authorError && (
-                                <p className="mt-1 text-sm text-red-600">Penulis wajib diisi</p>
+                                <p className="mt-1 text-sm text-red-600">{authorError}</p>
                             )}
                         </div>
 
@@ -234,7 +224,7 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
                                     value={category}
                                     onChange={(e) => {
                                         setCategory(e.target.value);
-                                        setCategoryError(false);
+                                        setCategoryError('');
                                     }}
                                     className={`mt-1 block w-full px-3 py-2.5 border ${categoryError ? 'border-red-500' : 'border-gray-300'
                                         } rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-800 bg-white appearance-none transition-all duration-200 hover:bg-gray-50 focus:bg-gray-50 pr-10`}
@@ -266,7 +256,7 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
                                 </span>
                             </div>
                             {categoryError && (
-                                <p className="mt-1 text-sm text-red-600">Kategori wajib diisi</p>
+                                <p className="mt-1 text-sm text-red-600">{categoryError}</p>
                             )}
                         </div>
 
@@ -292,7 +282,6 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
                                 </div>
                             )}
                         </div>
-
                     </div>
 
                     <div className="w-full flex-1">
@@ -302,7 +291,7 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
                                 value={desc}
                                 onChange={(e) => {
                                     setDesc(e.target.value);
-                                    setDescError(false);
+                                    setDescError('');
                                 }}
                                 placeholder="Tuliskan ringkasan buku di sini..."
                                 rows={6}
@@ -311,7 +300,7 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
                                 aria-label="Deskripsi buku"
                             ></textarea>
                             {descError && (
-                                <p className="mt-1 text-sm text-red-600">Deskripsi wajib diisi</p>
+                                <p className="mt-1 text-sm text-red-600">{descError}</p>
                             )}
                         </div>
 
@@ -320,7 +309,7 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
                             value={content}
                             onChange={(e) => {
                                 setContent(e.target.value);
-                                setContentError(false);
+                                setContentError('');
                             }}
                             placeholder="Tuliskan isi buku di sini..."
                             rows={6}
@@ -329,7 +318,7 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
                             aria-label="Isi buku"
                         ></textarea>
                         {contentError && (
-                            <p className="mt-1 text-sm text-red-600">Isi buku wajib diisi</p>
+                            <p className="mt-1 text-sm text-red-600">{contentError}</p>
                         )}
                     </div>
                 </div>
