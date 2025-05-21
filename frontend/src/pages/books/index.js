@@ -437,7 +437,6 @@ export default function BookList() {
                                                 setSearchQuery(book.title);
                                                 setShowSuggestions(false);
                                                 setHighlightedIndex(-1);
-                                                router.push(`/books/${book.id}/views`);
                                             }}
                                         >
                                             {book.title}{' '}
