@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Facebook, Twitter, Instagram } from 'lucide-react';
 import { usePathname } from "next/navigation";
+import Image from 'next/image';
 
 export default function Footer() {
     const pathname = usePathname();
@@ -18,7 +19,13 @@ export default function Footer() {
 
                 <div>
                     <Link href="/" className="text-2xl font-bold text-blue-400">
-                        SESPlus
+                        <Image
+                            src="/logo.png"
+                            alt="Logo"
+                            width={150}
+                            height={40}
+                            className="h-10 w-auto"
+                        />
                     </Link>
                     <p className="mt-4 text-gray-300 text-sm">
                         Katalog Buku. Kelola dan jelajahi koleksi buku dengan mudah dan cepat.
@@ -69,7 +76,7 @@ export default function Footer() {
 
                 <div>
                     <h3 className="text-lg font-semibold text-white mb-4">Kontak</h3>
-                    <p className="text-gray-300 text-sm">Email: example@sesplus.com</p>
+                    <p className="text-gray-300 text-sm">Email: example@bookapp.com</p>
                     <div className="flex gap-4 mt-4">
                         <a href="" className="text-gray-300 hover:text-blue-400 transition">
                             <Facebook size={20} />
@@ -85,7 +92,7 @@ export default function Footer() {
             </div>
             <div className="mt-8 border-t border-gray-700 pt-6 text-center">
                 <p className="text-sm text-gray-400">
-                    © {new Date().getFullYear()} Fauzan Hafizh Ahmad.
+                    © 2025 Fauzan Hafizh Ahmad.
                 </p>
             </div>
         </footer>

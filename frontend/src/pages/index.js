@@ -39,7 +39,7 @@ export default function Home() {
                             className={`text-5xl leading-[1.2] font-extrabold mb-4 transition-all duration-700 ease-out transform ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
                                 }`}
                         >
-                            Katalog Buku SESPlus
+                            Katalog Buku Book App
                         </h1>
 
                         <p
@@ -119,7 +119,7 @@ export default function Home() {
                 <section className="bg-white py-12">
                     <div className="max-w-7xl mx-auto px-6">
                         <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-                            Katalog Buku SESPlus
+                            Katalog Buku Book App
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <div

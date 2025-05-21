@@ -17,6 +17,7 @@ export default function App({ Component, pageProps }) {
     const title = useMemo(() => {
         const routeTitleMap = {
             '/': 'Home - Book App',
+            '/about': 'About - Book App',
             '/books': 'Books - Book App',
             '/books/[id]/views': 'Book Details - Book App',
             '/books/[id]': 'Edit Book - Book App',
@@ -29,7 +30,8 @@ export default function App({ Component, pageProps }) {
         <>
             <Head>
                 <title>{title}</title>
-                <meta name="description" content="A professional book management app" />
+                <meta name="description" content="A book management app" />
+                <link rel="icon" href="/icon.png" />
             </Head>
             <div className={poppins.variable}>
                 <NotificationManager />
