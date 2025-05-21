@@ -40,7 +40,7 @@ export default function Navbar() {
         <header className="bg-white shadow-md sticky top-0 z-50 transition-shadow duration-300">
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                 <Link href="/" className="text-2xl font-bold text-blue-600">
-                    SESPlus
+                    Book App
                 </Link>
 
                 <nav className="hidden md:flex items-center gap-8">

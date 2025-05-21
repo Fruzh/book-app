@@ -1,6 +1,9 @@
 import '@/styles/globals.css';
 import NotificationManager from '@/components/notificationManager';
 import { Poppins } from 'next/font/google';
+import { useRouter } from 'next/router';
+import { useMemo } from 'react';
+import Head from 'next/head';
 
 const poppins = Poppins({
     subsets: ['latin'],
@@ -9,10 +12,29 @@ const poppins = Poppins({
 })
 
 export default function App({ Component, pageProps }) {
+    const router = useRouter()
+
+    const title = useMemo(() => {
+        const routeTitleMap = {
+            '/': 'Home - Book App',
+            '/books': 'Books - Book App',
+            '/books/[id]/views': 'Book Details - Book App',
+            '/books/[id]': 'Edit Book - Book App',
+        }
+
+        return routeTitleMap[router.pathname] || 'Book App'
+    }, [router.pathname])
+
     return (
-        <div className={poppins.variable}>
-            <NotificationManager />
-            <Component {...pageProps} />
-        </div>
+        <>
+            <Head>
+                <title>{title}</title>
+                <meta name="description" content="A professional book management app" />
+            </Head>
+            <div className={poppins.variable}>
+                <NotificationManager />
+                <Component {...pageProps} />
+            </div>
+        </>
     );
 }
