@@ -1,7 +1,7 @@
 
 # 📚 Book App
 
-**A web-based book management application for students**  
+**A web-based book management application**  
 Built with **Next.js** (frontend) and **AdonisJS** (backend), using **MySQL** for data storage.
 
 
@@ -15,7 +15,6 @@ Built with **Next.js** (frontend) and **AdonisJS** (backend), using **MySQL** fo
   - Description
   - Content
   - Cover Image
-- 🔒 **Access restricted to student role users**
 - 📸 **Image upload support** for book covers
 - 🔔 **Real-time notifications** on user actions
 - 📱 **Responsive design** for desktop and mobile
@@ -43,8 +42,7 @@ book-app/
 │   └── .env.example   # Environment config template
 ├── frontend/          # Next.js frontend
 │   ├── src/           # Pages, components, API routes
-│   ├── public/        # Static assets (e.g., uploads/)
-│   └── .env.local     # Environment variables
+│   └── public/        # Static assets (e.g., uploads/)
 └── README.md          # Project documentation
 
 ```
@@ -111,20 +109,7 @@ node ace serve --watch
 
 ### 🌐 4. Configure and Run the Frontend
 
-Open a new terminal tab/window:
-
-```bash
-cd frontend
-touch .env.local
-```
-
-Create `.env.local` with the following:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3333
-```
-
-Install dependencies and start the frontend:
+Open a new terminal tab/window, install dependencies and start the frontend:
 
 ```bash
 npm install
@@ -136,9 +121,6 @@ npm run dev
 ### 🎯 5. Access the App
 
 Visit: [http://localhost:3000](http://localhost:3000)
-Log in using a student role account (create via backend if needed).
-
-
 
 ## 🧪 Testing the App
 
@@ -146,62 +128,3 @@ Log in using a student role account (create via backend if needed).
 * ✏️ **Edit a Book**: `/books/[id]`
 * ❌ **Delete a Book**: Delete button on the detail/edit page
 * 📁 **Uploads**: Check `frontend/public/uploads/` for images
-
-
-## 🛠️ Troubleshooting
-
-### ❗ Database Connection Error
-
-* Ensure MySQL is running
-* Verify credentials in `.env`
-* Confirm `book_app` database exists
-
-### ❗ Backend Not Starting
-
-* Ensure port `3333` is free
-
-  * On Linux/macOS: `lsof -i :3333`
-  * On Windows: `netstat -a`
-* Re-run: `npm install`
-
-### ❗ Frontend API Errors
-
-* Check if backend is running at `http://localhost:3333`
-* Verify `NEXT_PUBLIC_API_URL` in `.env.local`
-
-### ❗ Image Upload Issues
-
-* Ensure `frontend/public/uploads/` exists and is writable
-
-  * On Linux/macOS: `chmod 775 frontend/public/uploads/`
-* Confirm files are being uploaded and old images deleted on update
-
-## 📝 Notes
-
-* The app assumes a `student` role is defined in the backend.
-* Uploaded images are saved in `frontend/public/uploads/`. Backup before deployment.
-* In production:
-
-  * Set environment variables securely
-  * Use a reverse proxy (e.g., Nginx) for both frontend and backend
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a branch:
-
-```
-git checkout -b feature/your-feature
-```
-
-3. Commit your changes:
-
-```
-git commit -m "Add your feature"
-```
-
-4. Push and open a pull request:
-
-```
-git push origin feature/your-feature
-```
