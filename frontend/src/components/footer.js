@@ -18,7 +18,7 @@ export default function Footer() {
             <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
 
                 <div>
-                    <Link href="/" className="text-2xl font-bold text-blue-400">
+                    <Link href="/" onClick={(e) => handleClick(e, "/")} className="text-2xl font-bold text-blue-400">
                         <Image
                             src="/logo.png"
                             alt="Logo"

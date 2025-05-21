@@ -3,12 +3,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
     const navRef = useRef(null);
     const buttonRef = useRef(null);
+    const pathname = usePathname();
 
     const toggleMenu = () => {
         setIsOpen((prev) => !prev);
@@ -18,7 +20,14 @@ export default function Navbar() {
         if (href === '/') {
             return router.pathname === '/';
         }
-        return router.pathname === href || router.pathname.startsWith(href + '/');
+        return router.pathname === href;
+    };
+
+    const handleClick = (e, href) => {
+        if (pathname === href) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
     };
 
     useEffect(() => {
@@ -40,7 +49,7 @@ export default function Navbar() {
     return (
         <header className="bg-white shadow-md sticky top-0 z-50 transition-shadow duration-300">
             <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-blue-600">
+                <Link href="/" onClick={(e) => handleClick(e, "/")} className="flex items-center gap-2 text-2xl font-bold text-blue-600">
                     <Image
                         src="/logo.png"
                         alt="Logo"
@@ -53,6 +62,7 @@ export default function Navbar() {
                 <nav className="hidden md:flex items-center gap-8">
                     <Link
                         href="/"
+                        onClick={(e) => handleClick(e, "/")}
                         className={`font-medium transition duration-200 ${isActive('/') ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-blue-600'
                             }`}
                         aria-current={isActive('/') ? 'page' : undefined}
@@ -61,6 +71,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                         href="/about"
+                        onClick={(e) => handleClick(e, "/about")}
                         className={`font-medium transition duration-200 ${isActive('/about') ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-blue-600'
                             }`}
                         aria-current={isActive('/about') ? 'page' : undefined}
@@ -69,6 +80,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                         href="/books"
+                        onClick={(e) => handleClick(e, "/books")}
                         className={`font-medium transition duration-200 ${isActive('/books') ? 'text-blue-600 font-semibold' : 'text-gray-600 hover:text-blue-600'
                             }`}
                         aria-current={isActive('/books') ? 'page' : undefined}
@@ -77,9 +89,10 @@ export default function Navbar() {
                     </Link>
                     <Link
                         href="/books/add"
+                        onClick={(e) => handleClick(e, "/books/add")}
                         className={`font-medium px-4 py-2 rounded-lg transition duration-200 ${isActive('/books/add')
-                                ? 'bg-blue-700 text-white'
-                                : 'bg-blue-600 text-white hover:bg-blue-700'
+                            ? 'bg-transparent border border-blue-600 text-blue-600 hover:bg-blue-50'
+                            : 'bg-blue-600 text-white hover:bg-blue-700 border border-transparent'
                             }`}
                         aria-current={isActive('/books/add') ? 'page' : undefined}
                     >
@@ -135,8 +148,8 @@ export default function Navbar() {
                     <Link
                         href="/books/add"
                         className={`font-medium px-4 py-2 rounded-lg text-center ${isActive('/books/add')
-                                ? 'bg-blue-700 text-white'
-                                : 'bg-blue-600 text-white hover:bg-blue-700'
+                            ? 'bg-blue-700 text-white'
+                            : 'bg-blue-600 text-white hover:bg-blue-700'
                             }`}
                         onClick={toggleMenu}
                         aria-current={isActive('/books/add') ? 'page' : undefined}
