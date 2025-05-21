@@ -280,37 +280,51 @@ export default function BookForm({ onSubmit, initialData = {}, onDelete }) {
 
                     <div className="w-full flex-1">
                         <div className="mb-5">
-                            <label className="block text-sm font-medium text-gray-700">Deskripsi Buku</label>
-                            <textarea
-                                value={desc}
-                                onChange={(e) => {
-                                    setDesc(e.target.value);
-                                    setDescError('');
-                                }}
-                                placeholder="Tuliskan ringkasan buku di sini..."
-                                rows={6}
-                                className={`mt-1 block w-full px-3 py-2 border ${descError ? 'border-red-500' : 'border-gray-300'
-                                    } rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-800 resize-none min-h-36 transition-all duration-200 hover:bg-gray-50`}
-                                aria-label="Deskripsi buku"
-                            ></textarea>
+                            <div className='relative'>
+                                <label className="block text-sm font-medium text-gray-700">Deskripsi Buku</label>
+                                <textarea
+                                    value={desc}
+                                    onChange={(e) => {
+                                        setDesc(e.target.value);
+                                        setDescError('');
+                                    }}
+                                    placeholder="Tuliskan ringkasan buku di sini..."
+                                    rows={6}
+                                    maxLength={500}
+                                    className={`mt-1 block w-full px-3 py-2 border ${descError ? 'border-red-500' : 'border-gray-300'
+                                        } rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-800 resize-none min-h-36 transition-all duration-200 hover:bg-gray-50`}
+                                    aria-label="Deskripsi buku"
+                                ></textarea>
+
+                                <div className="absolute bottom-2 right-3 text-sm text-gray-500">
+                                    {desc.length} / 500
+                                </div>
+                            </div>
+
                             {descError && (
                                 <p className="mt-1 text-sm text-red-600">{descError}</p>
                             )}
                         </div>
 
-                        <label className="block text-sm font-medium text-gray-700">Isi Buku</label>
-                        <textarea
-                            value={content}
-                            onChange={(e) => {
-                                setContent(e.target.value);
-                                setContentError('');
-                            }}
-                            placeholder="Tuliskan isi buku di sini..."
-                            rows={6}
-                            className={`mt-1 block w-full px-3 py-2 border ${contentError ? 'border-red-500' : 'border-gray-300'
-                                } rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-800 resize-height max-h-128 min-h-[340px] transition-colors duration-200 hover:bg-gray-50`}
-                            aria-label="Isi buku"
-                        ></textarea>
+                        <div className="relative">
+                            <label className="block text-sm font-medium text-gray-700">Isi Buku</label>
+                            <textarea
+                                value={content}
+                                onChange={(e) => {
+                                    setContent(e.target.value);
+                                    setContentError('');
+                                }}
+                                placeholder="Tuliskan isi buku di sini..."
+                                rows={6}
+                                className={`mt-1 block w-full px-3 py-2 border ${contentError ? 'border-red-500' : 'border-gray-300'
+                                    } rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-gray-800 resize-height max-h-128 min-h-[340px] transition-colors duration-200 hover:bg-gray-50`}
+                                aria-label="Isi buku"
+                            ></textarea>
+
+                            <div className="absolute bottom-2 right-3 text-sm text-gray-500">
+                                {content.length} karakter
+                            </div>
+                        </div>
                         {contentError && (
                             <p className="mt-1 text-sm text-red-600">{contentError}</p>
                         )}

@@ -19,6 +19,7 @@ export default function App({ Component, pageProps }) {
             '/': 'Home - Book App',
             '/about': 'About - Book App',
             '/books': 'Books - Book App',
+            '/books/add': 'Add Book - Book App',
             '/books/[id]/views': 'Book Details - Book App',
             '/books/[id]': 'Edit Book - Book App',
         }
