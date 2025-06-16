@@ -1,6 +1,7 @@
 import formidable from 'formidable';
 import path from 'path';
 import { nanoid } from 'nanoid';
+import API_BASE_URL from '@/config/api';
 
 export const config = {
     api: {
@@ -13,7 +14,7 @@ export default async function handler(req, res) {
 
     if (req.method === 'GET') {
         try {
-            const response = await fetch('http://localhost:3333/books', {
+            const response = await fetch(`${API_BASE_URL}/books`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
