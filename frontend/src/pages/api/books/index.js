@@ -90,7 +90,7 @@ export default async function handler(req, res) {
             };
             console.log('Sending JSON to backend:', jsonData);
 
-            const response = await fetch('http://localhost:3333/books', {
+            const response = await fetch(`${API_BASE_URL}/books`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -49,7 +49,7 @@ export default async function handler(req, res) {
 
         try {
             // Fetch the current book to get the existing image path
-            const bookResponse = await fetch(`http://localhost:3333/books/${id}`, {
+            const bookResponse = await fetch(`${API_BASE_URL}/books/${id}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -124,7 +124,7 @@ export default async function handler(req, res) {
             };
             console.log('Sending JSON to backend:', jsonData);
 
-            const response = await fetch(`http://localhost:3333/books/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/books/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ export default async function handler(req, res) {
 
     if (req.method === 'DELETE') {
         try {
-            const response = await fetch(`http://localhost:3333/books/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/books/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
