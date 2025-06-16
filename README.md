@@ -112,6 +112,7 @@ node ace serve --watch
 Open a new terminal tab/window, install dependencies and start the frontend:
 
 ```bash
+cd frontend
 npm install
 npm run dev
 ```
