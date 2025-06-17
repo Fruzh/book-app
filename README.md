@@ -87,18 +87,22 @@ cp .env.example .env
 Edit `.env` and update your MySQL credentials:
 
 ```env
-DB_CONNECTION=mysql
-MYSQL_HOST=localhost
+PORT=3333
+HOST=localhost
 MYSQL_PORT=3306
-MYSQL_USER=your_username
-MYSQL_PASSWORD=your_password
-MYSQL_DB_NAME=book_app
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=your_username
+DB_PASSWORD=your_password
+DB_DATABASE=book-app
+DB_CONNECTION=mysql
 ```
 
 Install dependencies and run migrations:
 
 ```bash
 npm install
+node ace generate:key
 node ace migration:run
 node ace db:seed
 node ace serve --watch
